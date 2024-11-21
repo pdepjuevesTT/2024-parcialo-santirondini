@@ -5,3 +5,10 @@
 {"level":"info","message":"⌛ Building environment","timeElapsed":122,"timestamp":"2024-11-21T17:08:42.585Z"}
 {"level":"info","message":"onRequest - WORKSPACE_URI:file:///c%3A/Users/usuario/Desktop/2024-parcialo-santirondini","timestamp":"2024-11-21T17:08:42.594Z"}
 {"level":"info","message":"⌛ Validating example.wlk","timeElapsed":104,"timestamp":"2024-11-21T17:08:42.815Z"}
+{"level":"info","message":"onRequest - STRONG_FILES_CHANGED:c:\\Users\\usuario\\Desktop\\2024-parcialo-santirondini\\example.wlk","timestamp":"2024-11-21T17:08:58.166Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":145,"timestamp":"2024-11-21T17:08:58.311Z"}
+{"level":"info","message":"Removing diagnostics from \\Users\\usuario\\Desktop\\2024-parcialo-santirondini\\example.wlk","timestamp":"2024-11-21T17:08:58.515Z"}
+{"level":"info","message":"onRequest - WORKSPACE_URI:file:///c%3A/Users/usuario/Desktop/2024-parcialo-santirondini","timestamp":"2024-11-21T17:08:58.515Z"}
+{"level":"info","message":"onRequest - STRONG_FILES_CHANGED:c:\\Users\\usuario\\Desktop\\2024-parcialo-santirondini\\testExample.wtest","timestamp":"2024-11-21T17:09:03.481Z"}
+{"level":"info","message":"onRequest - WORKSPACE_URI:file:///c%3A/Users/usuario/Desktop/2024-parcialo-santirondini","timestamp":"2024-11-21T17:09:03.688Z"}
+{"level":"info","message":"Removing diagnostics from \\Users\\usuario\\Desktop\\2024-parcialo-santirondini\\testExample.wtest","timestamp":"2024-11-21T17:09:03.713Z"}
