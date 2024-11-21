@@ -925,3 +925,4 @@
 {"level":"info","message":"⌛ Building environment","timeElapsed":105,"timestamp":"2024-11-21T18:12:55.917Z"}
 {"level":"info","message":"⌛ Building environment","timeElapsed":105,"timestamp":"2024-11-21T18:12:58.048Z"}
 {"error":["wollok.lang.EvaluationError wrapping TypeScript TypeError: Generator is already running"],"level":"info","message":"🖥️ REPL execution - build failed for c:\\Users\\usuario\\Desktop\\2024-parcialo-santirondini","ok":false,"timeElapsed":238,"timestamp":"2024-11-21T18:13:34.754Z"}
+{"level":"info","message":"⌛ Validating personas.wlk","timeElapsed":102,"timestamp":"2024-11-21T18:13:53.541Z"}
