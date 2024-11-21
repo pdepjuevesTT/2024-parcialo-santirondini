@@ -1,16 +1,9 @@
 
-//las cuotas se pagan con el sueldo, si no, se van al efectivo 
-
-/*
-const cosa = new Cosa(precio = 100,nombre = "Libro")
-const tarjetaDebito = new TarjetaDebito(monto = 200,titulares = ["santino"])
-const santino = new Persona(nombre = "santino" , formaFavorita = tarjetaDebito)
-*/
-
-
 class Trabajo {
 
     var salario 
+
+    var empleados = []
 
     method salario() = salario
     
@@ -23,7 +16,12 @@ class Trabajo {
         else
         self.error("No se puede bajar el salario")
     }
+
+    method elQueMasCosasTiene() {
+        return empleados.max { empleado => empleado.cantidadDeCosas()}
+    }
 }
+
 class Persona {
 
     var nombre
@@ -33,7 +31,15 @@ class Persona {
     var deudas = []
     var trabajo
     var sueldo
+    var efectivo
 
+    method formasDePago() = formasDePago 
+
+    method efectivo() = efectivo
+
+    method cantidadDeCosas() {
+        return cosas.size()
+    }
     method deudas() = deudas
 
     method nombre() = nombre
@@ -42,7 +48,7 @@ class Persona {
         if(formasDePago.contains(nuevoMetodo))
         formaFavorita = nuevoMetodo
         else 
-        self.error("La forma de pago que quieres poner como favoritam no esta entre tus formas de pago")
+        self.error("La forma de pago que quieres poner como favorita no esta entre tus formas de pago")
     }
 
     method esTitular(tarjetaDebito) =
@@ -52,31 +58,103 @@ class Persona {
         cosas.add(cosa)
     }
 
-    method comprar(cosa) {
-    if(formaFavorita.condicionParaComprar(cosa)) {
+    method compraExitosa(cosa,formaDePago) {
     self.adquirir(cosa)
-    formaFavorita.consecuencia(cosa,self)
-    formaFavorita.restar(cosa)    
+    formaDePago.restar(cosa)    
     }
+
+    method usoDeSueldo(){
+        self.cobrarSueldo()
+        deudas.removeAllSuchThat{ deuda =>
+        self.pagarDeuda(deuda) 
+        }
+    }
+
+    method comprar(cosa) {
+    if(formaFavorita.condicionParaComprar(cosa)) 
+    self.compraExitosa(cosa,formaFavorita)
     else 
     self.error("No se puede adquirir :(")
     }
 
-    method puedePagarDeuda(monto,deuda) = monto > deuda
+    method puedePagarDeuda(deuda) = sueldo > deuda
 
-    method pagarDeudas() {
-
+    method pagarDeuda(deuda) {
+        if(self.puedePagarDeuda(deuda))
+        sueldo =  sueldo - deuda 
     }
 
+    method noTieneDeudas() = deudas.size() == 0
+
     method transcurreMes() {
-        const sueldo = self.cobrarSueldo()
-        deudas.forEach 
-
-
+        self.usoDeSueldo() 
+        if(self.noTieneDeudas())
+        efectivo = efectivo + sueldo 
     }
 
     method cobrarSueldo() {
-        return trabajo.sueldo()
+        sueldo =+ trabajo.sueldo()
+    }
+
+    method deudasTotales() {
+        return deudas.sum()
+    }
+}
+
+/*
+
+      method transcurreMes() {
+        self.cobrarSueldo()
+        deudas.removeAllSuchThat{ deuda =>
+        self.pagarDeuda(deuda) 
+        }
+        if(self.noTieneDeudas())
+        efectivo = efectivo + sueldo 
+    }
+
+*/
+
+class PagadorCompulsivo inherits Persona {
+
+    method pagarConEfectivo(deuda) {
+        if(self.efectivo() > deuda){ 
+        efectivo = efectivo - deuda 
+    }
+    }
+
+    override method transcurreMes() {
+        self.usoDeSueldo()
+        if(not self.noTieneDeudas()) {
+        deudas.removeAllSuchThat{ deuda =>
+        self.pagarConEfectivo(deuda) 
+        }} 
+        if(not self.noTieneDeudas())
+        self.error("Quedaron deudas sin pagar")        
+    }
+}
+
+class CompradorCompulsivo inherits Persona {
+
+    method nuevaFormaDePago(cosa) {
+        return self.formasDePago().find{forma => forma.condicionParaComprar(cosa)}
+    }
+
+    method existeOtraForma(cosa) =
+    self.formasDePago().any{ forma => forma.condicionParaComprar(cosa)}
+
+    method pagoConOtrosMetodos(cosa) {
+        if (self.existeOtraForma(cosa)) {
+            self.compraExitosa(cosa,self.nuevaFormaDePago(cosa))
+        } else {
+            self.error("No se puede adquirir por ningun metodo :(")
+        }
+    }
+
+    override method comprar(cosa) {
+        if (formaFavorita.condicionParaComprar(cosa))
+            self.compraExitosa(cosa, formaFavorita) 
+        else
+        self.pagoConOtrosMetodos(cosa)
     }
 }
 
@@ -86,13 +164,18 @@ class Cosa {
 
     var nombre 
 
+    var lugarDeFabricacion
+
+    method lugarDeFabricacion() = lugarDeFabricacion
+
     method precio() = precio
 }
 
-class TarjetaCredito inherits FormaDePago {
+class TarjetaCredito inherits Tarjeta {
 
     var cantCuotas 
     var interes
+    var titular
 
     method valorCuota(cosa) {
         return (cosa.precio()*interes) / cantCuotas
@@ -102,17 +185,17 @@ class TarjetaCredito inherits FormaDePago {
 
     override method condicionParaComprar(cosa) = self.precioNoSuperaMaximo(cosa) 
 
-    override method consecuencia(cosa,persona) {
-        self.almacenarDeudas(cosa, persona)
+    override method consecuenciaDeFormaDePago(cosa) {
+        self.almacenarDeudas(cosa)
     }
 
-    method almacenarDeudas(cosa,persona) {
-        cantCuotas.times(persona.deudas().add(self.valorCuota(cosa)))       
+    method almacenarDeudas(cosa) {
+        cantCuotas.times(titular.deudas().add(self.valorCuota(cosa)))       
     }
 
 }
 
-class FormaDePago {
+class Tarjeta {
     
     var monto
 
@@ -120,12 +203,29 @@ class FormaDePago {
 
     method condicionParaComprar(cosa)
 
-    method restar(cosa)
-
-    method consecuencia(cosa,persona)
+    method consecuenciaDeFormaDePago(cosa)
 }
 
-class TarjetaDebito inherits FormaDePago  {
+class TarjetaDelSony inherits TarjetaCredito {
+
+
+    method tenerUnPrecioCuervo(cosa) = cosa.precio() > 6082014 
+
+    method hechoEnBoedo(cosa) = cosa.lugarDeFabricacion() == "Boedo"
+    
+    override method condicionParaComprar(cosa) = 
+    self.tenerUnPrecioCuervo(cosa) && self.hechoEnBoedo(cosa)
+
+    override method valorCuota(cosa) {
+        return (cosa.precio()*interes + 1908) / cantCuotas
+    }
+
+    override method almacenarDeudas(cosa) {
+        cantCuotas.times(titular.deudas().add(self.valorCuota(cosa)))       
+    }
+}
+
+class TarjetaDebito inherits Tarjeta  {
 
     var titulares
 
@@ -136,17 +236,23 @@ class TarjetaDebito inherits FormaDePago  {
     override method condicionParaComprar(cosa) =
     self.noSuperaMonto(cosa)
 
-    override method restar(cosa) {
+    override method consecuenciaDeFormaDePago(cosa) {
         monto = monto - cosa.precio()
     }
 }
 
-class Efectivo inherits FormaDePago { 
+class Efectivo { 
+    
+    var persona
+    
+    method condicionParaComprar(cosa) = 
+    persona.efectivo() >= cosa.precio()
 
-    override method condicionParaComprar(cosa) = 
-    monto >= cosa.precio()
+    method consecuenciaDeFormaDePago(cosa) {
+        persona.efectivo( persona.efectivo() - cosa.precio()) 
+    }
 
-    override method restar(cosa) {
-        monto = monto - cosa.precio()
+    method sumarEfectivo(cantidad) {
+        persona.efectivo(persona.efectivo() + cantidad) 
     }
 }
