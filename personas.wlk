@@ -1,3 +1,5 @@
+import metodosDePago.*
+
 
 class Trabajo {
 
@@ -32,6 +34,7 @@ class Persona {
     var trabajo
     var sueldo
     var efectivo
+    var mesActual
 
     method formasDePago() = formasDePago 
 
@@ -84,9 +87,17 @@ class Persona {
         sueldo =  sueldo - deuda 
     }
 
+    method moverMes() {
+        if(mesActual + 1 > 12)
+        mesActual = 1
+        else 
+        mesActual = mesActual + 1
+    }
+
     method noTieneDeudas() = deudas.size() == 0
 
     method transcurreMes() {
+        self.moverMes()
         self.usoDeSueldo() 
         if(self.noTieneDeudas())
         efectivo = efectivo + sueldo 
@@ -100,19 +111,6 @@ class Persona {
         return deudas.sum()
     }
 }
-
-/*
-
-      method transcurreMes() {
-        self.cobrarSueldo()
-        deudas.removeAllSuchThat{ deuda =>
-        self.pagarDeuda(deuda) 
-        }
-        if(self.noTieneDeudas())
-        efectivo = efectivo + sueldo 
-    }
-
-*/
 
 class PagadorCompulsivo inherits Persona {
 
@@ -171,88 +169,3 @@ class Cosa {
     method precio() = precio
 }
 
-class TarjetaCredito inherits Tarjeta {
-
-    var cantCuotas 
-    var interes
-    var titular
-
-    method valorCuota(cosa) {
-        return (cosa.precio()*interes) / cantCuotas
-    }
-
-    method precioNoSuperaMaximo(cosa) = cosa.precio() <= monto
-
-    override method condicionParaComprar(cosa) = self.precioNoSuperaMaximo(cosa) 
-
-    override method consecuenciaDeFormaDePago(cosa) {
-        self.almacenarDeudas(cosa)
-    }
-
-    method almacenarDeudas(cosa) {
-        cantCuotas.times(titular.deudas().add(self.valorCuota(cosa)))       
-    }
-
-}
-
-class Tarjeta {
-    
-    var monto
-
-    method monto() = monto
-
-    method condicionParaComprar(cosa)
-
-    method consecuenciaDeFormaDePago(cosa)
-}
-
-class TarjetaDelSony inherits TarjetaCredito {
-
-
-    method tenerUnPrecioCuervo(cosa) = cosa.precio() > 6082014 
-
-    method hechoEnBoedo(cosa) = cosa.lugarDeFabricacion() == "Boedo"
-    
-    override method condicionParaComprar(cosa) = 
-    self.tenerUnPrecioCuervo(cosa) && self.hechoEnBoedo(cosa)
-
-    override method valorCuota(cosa) {
-        return (cosa.precio()*interes + 1908) / cantCuotas
-    }
-
-    override method almacenarDeudas(cosa) {
-        cantCuotas.times(titular.deudas().add(self.valorCuota(cosa)))       
-    }
-}
-
-class TarjetaDebito inherits Tarjeta  {
-
-    var titulares
-
-    method titulares() = titulares
-
-    method noSuperaMonto(cosa) = cosa.precio() <= monto 
-
-    override method condicionParaComprar(cosa) =
-    self.noSuperaMonto(cosa)
-
-    override method consecuenciaDeFormaDePago(cosa) {
-        monto = monto - cosa.precio()
-    }
-}
-
-class Efectivo { 
-    
-    var persona
-    
-    method condicionParaComprar(cosa) = 
-    persona.efectivo() >= cosa.precio()
-
-    method consecuenciaDeFormaDePago(cosa) {
-        persona.efectivo( persona.efectivo() - cosa.precio()) 
-    }
-
-    method sumarEfectivo(cantidad) {
-        persona.efectivo(persona.efectivo() + cantidad) 
-    }
-}
