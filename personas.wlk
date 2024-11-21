@@ -88,9 +88,6 @@ class Persona {
     }
 
     method moverMes() {
-        if(mesActual + 1 > 12)
-        mesActual = 1
-        else 
         mesActual = mesActual + 1
     }
 
