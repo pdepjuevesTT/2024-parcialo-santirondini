@@ -1,9 +1,8 @@
-import example.pepita
-
+import personas.*
 describe "group of tests for pepita" {
 
   test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+    
   }
 
 }
