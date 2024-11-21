@@ -460,3 +460,11 @@
 {"level":"info","message":"⌛ Building environment","timeElapsed":154,"timestamp":"2024-11-21T20:10:11.641Z"}
 {"level":"info","message":"⌛ Validating test.wtest","timeElapsed":101,"timestamp":"2024-11-21T20:10:11.745Z"}
 {"level":"info","message":"⌛ Building environment","timeElapsed":111,"timestamp":"2024-11-21T20:10:24.278Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":155,"timestamp":"2024-11-21T20:14:26.258Z"}
+{"level":"info","message":"onRequest - WORKSPACE_URI:file:///c%3A/Users/usuario/Desktop/2024-parcialo-santirondini","timestamp":"2024-11-21T20:14:26.265Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":121,"timestamp":"2024-11-21T20:14:26.387Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":114,"timestamp":"2024-11-21T20:14:27.276Z"}
+{"level":"info","message":"⌛ Validating personas.wlk","timeElapsed":197,"timestamp":"2024-11-21T20:14:27.475Z"}
+{"level":"info","message":"⌛ Validating test.wtest","timeElapsed":207,"timestamp":"2024-11-21T20:14:28.084Z"}
+{"level":"info","message":"⌛ Validating personas.wlk","timeElapsed":143,"timestamp":"2024-11-21T20:14:28.228Z"}
+{"level":"info","message":"⌛ Validating metodosDePago.wlk","timeElapsed":165,"timestamp":"2024-11-21T20:14:29.418Z"}
