@@ -2,3 +2,6 @@
 {"level":"info","message":"⌛ Validating example.wlk","timeElapsed":122,"timestamp":"2024-05-21T14:48:08.744Z"}
 {"level":"info","message":"⌛ Validating testExample.wtest","timeElapsed":107,"timestamp":"2024-05-21T14:48:08.938Z"}
 {"level":"info","message":"⌛ Validating example.wlk","timeElapsed":104,"timestamp":"2024-05-21T15:07:42.143Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":122,"timestamp":"2024-11-21T17:08:42.585Z"}
+{"level":"info","message":"onRequest - WORKSPACE_URI:file:///c%3A/Users/usuario/Desktop/2024-parcialo-santirondini","timestamp":"2024-11-21T17:08:42.594Z"}
+{"level":"info","message":"⌛ Validating example.wlk","timeElapsed":104,"timestamp":"2024-11-21T17:08:42.815Z"}
